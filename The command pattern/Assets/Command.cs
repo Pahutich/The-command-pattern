@@ -7,6 +7,13 @@ public abstract class Command
   public abstract void Execute(Animator anim);
 }
 
+public class MoveForward : Command
+{
+  public override void Execute(Animator anim)
+  {
+    anim.SetTrigger("isWalking");
+  }
+}
 public class PerformJump : Command
 {
   public override void Execute(Animator anim)
