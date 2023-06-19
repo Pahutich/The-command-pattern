@@ -56,38 +56,53 @@ public class InputHandler : MonoBehaviour
 
     for (int i = 0; i < oldCommands.Count; i++)
     {
-      oldCommands[i].Execute(anim);
+      oldCommands[i].Execute(anim, true);
       yield return new WaitForSeconds(1f);
     }
     isReplaying = false;
+  }
+
+  void UndoLastCommand()
+  {
+    if (oldCommands.Count > 0)
+    {
+      Command c = oldCommands[oldCommands.Count - 1];
+      c.Execute(anim, false);
+      oldCommands.RemoveAt(oldCommands.Count - 1);
+    }
   }
 
   private void HandleInput()
   {
     if (Input.GetKeyDown(KeyCode.Q))
     {
-      keyQ.Execute(anim);
+      keyQ.Execute(anim, true);
       oldCommands.Add(keyQ);
     }
     else if (Input.GetKeyDown(KeyCode.W))
     {
-      keyW.Execute(anim);
+      keyW.Execute(anim, true);
       oldCommands.Add(keyW);
     }
     else if (Input.GetKeyDown(KeyCode.E))
     {
-      keyE.Execute(anim);
+      keyE.Execute(anim, true);
       oldCommands.Add(keyE);
     }
     else if (Input.GetKeyDown(KeyCode.UpArrow))
     {
-      upArrow.Execute(anim);
+      upArrow.Execute(anim, true);
       oldCommands.Add(upArrow);
     }
 
     if (Input.GetKeyDown(KeyCode.Space))
     {
       shouldStartReplay = true;
+    }
+
+    if (Input.GetKeyDown(KeyCode.Z))
+    {
+      UndoLastCommand();
     }
   }
 }
